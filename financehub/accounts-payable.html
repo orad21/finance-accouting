@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts Payable - FinanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+    <link href="styles/accounts-payable.css" rel="stylesheet">
+</head>
+<body class="bg-light text-dark">
+    <div class="container-fluid p-0">
+        <div class="row g-0 min-vh-100">
+            <!-- Sidebar -->
+            <nav class="col-lg-auto sidebar">
+                <div class="d-flex flex-column min-vh-100" style="width: 280px;">
+                    <!-- Logo -->
+                    <div class="d-flex align-items-center gap-2 px-4 py-3 border-bottom border-secondary">
+                        <i class="bi bi-wallet2 fs-4"></i>
+                        <span class="fw-bold">FinanceHub</span>
+                    </div>
+                    
+                    <!-- Search -->
+                    <div class="px-3 py-3">
+                        <input type="text" class="form-control search-input" placeholder="Search">
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <div class="flex-grow-1 px-2">
+                        <div class="nav-container">
+                            <button class="nav-btn" data-page="index.html">
+                                <i class="bi bi-grid"></i>
+                                <span>Dashboard</span>
+                            </button>
+                            <button class="nav-btn" data-page="index.html">
+                                <i class="bi bi-journal-text"></i>
+                                <span>General Ledger</span>
+                            </button>
+                            <button class="nav-btn" data-page="index.html">
+                                <i class="bi bi-airplane"></i>
+                                <span>Travel Management</span>
+                            </button>
+                            <button class="nav-btn" data-page="accounts-receivable.html">
+                                <i class="bi bi-arrow-down-circle"></i>
+                                <span>Accounts Receivable</span>
+                            </button>
+                            <button class="nav-btn active">
+                                <i class="bi bi-arrow-up-circle"></i>
+                                <span>Accounts Payable</span>
+                            </button>
+                            <button class="nav-btn">
+                                <i class="bi bi-building"></i>
+                                <span>Asset Accounting</span>
+                            </button>
+                            <button class="nav-btn">
+                                <i class="bi bi-bank"></i>
+                                <span>Bank Accounting</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            
+            <!-- Main Content -->
+            <main class="col p-4">
+                <!-- Header -->
+                <div class="mb-4">
+                    <h1 class="h2 mb-1 fw-bold">Accounts Payable</h1>
+                    <small class="text-muted">Manage your payables and vendor payments</small>
+                </div>
+                
+                <!-- AP Aging Chart -->
+                <div class="chart-card mb-4">
+                    <h3 class="h5 fw-semibold mb-4">AP Aging</h3>
+                    <div style="height: 300px;">
+                        <canvas id="apAgingChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- AP Aging Table -->
+                <div class="chart-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="h5 fw-semibold">AP Aging</h3>
+                        <div class="action-buttons">
+                            <button class="btn btn-outline-primary me-2" id="makePaymentBtn" disabled>
+                                <i class="bi bi-currency-dollar me-2"></i>Make Payment
+                            </button>
+                            <button class="btn btn-primary" id="sendReminderBtn" disabled>
+                                <i class="bi bi-envelope me-2"></i>Send Reminder
+                            </button>
+                            <div class="payment-form d-none" id="paymentForm">
+                                <input type="text" class="form-control me-2" placeholder="Enter amount" id="paymentInput" style="width: 150px;">
+                                <button class="btn btn-success btn-sm me-2" id="confirmPayment">Pay</button>
+                                <button class="btn btn-outline-secondary btn-sm" id="cancelPayment">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Table -->
+                    <div class="invoice-table">
+                        <div class="invoice-header">
+                            <div class="invoice-col">
+                                <input type="checkbox" id="selectAll">
+                            </div>
+                            <div class="invoice-col">Invoice</div>
+                            <div class="invoice-col">Balance</div>
+                            <div class="invoice-col">Promise Date</div>
+                            <div class="invoice-col">Days Overdue</div>
+                            <div class="invoice-col">Vendor</div>
+                        </div>
+                        <div class="invoice-body" id="invoiceList">
+                            <!-- Invoice rows will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Summary -->
+                    <div class="summary-section">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="summary-item">
+                                    <label class="summary-label">Total Outstanding</label>
+                                    <div class="summary-value" id="totalOutstanding">$8,500</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="summary-item">
+                                    <label class="summary-label">Selected Amount</label>
+                                    <div class="summary-value text-primary" id="selectedAmount">$0</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="summary-item">
+                                    <label class="summary-label">Overdue (60+ days)</label>
+                                    <div class="summary-value text-danger" id="overdueCount">1</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="summary-item">
+                                    <label class="summary-label">Selected Invoices</label>
+                                    <div class="summary-value" id="selectedCount">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/accounts-payable.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/transitions.js"></script>
+</body>
+</html>

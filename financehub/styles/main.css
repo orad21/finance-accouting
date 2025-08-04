@@ -1,0 +1,985 @@
+/* Custom CSS for FinanceHub Dashboard - Exact replica of TSX version */
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 9%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 9%;
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+  --border: 0 0% 89.8%;
+  --input: 0 0% 96.1%;
+  --primary: 20.5 90.2% 48.2%;
+}
+
+/* Page Transition Animations */
+.page-transition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-100%);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.page-transition.active {
+  transform: translateX(0);
+}
+
+/* Dashboard-specific transition */
+.page-transition.dashboard-transition {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  animation: dashboardPulse 2s ease-in-out infinite;
+}
+
+@keyframes dashboardPulse {
+  0%, 100% {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  50% {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  }
+}
+
+.page-transition .transition-content {
+  text-align: center;
+  color: white;
+}
+
+.page-transition .transition-content i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.page-transition .transition-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.page-transition .transition-content p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Dashboard-specific content */
+.dashboard-content {
+  max-width: 400px;
+  padding: 2rem;
+}
+
+.dashboard-icon {
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-icon i {
+  font-size: 4rem;
+  animation: dashboardIconFloat 2s ease-in-out infinite;
+}
+
+@keyframes dashboardIconFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.1);
+  }
+}
+
+.dashboard-loading {
+  margin-top: 2rem;
+}
+
+.loading-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.loading-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #ffffff, #f0f0f0);
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.loading-stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  min-height: 1.2em;
+  transition: all 0.3s ease;
+}
+
+.stat-value:contains('✓') {
+  color: #4ade80;
+  animation: successPulse 0.5s ease-in-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.page-transition .loading-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.page-transition .loading-dots span {
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  animation: loadingDot 1.4s ease-in-out infinite;
+}
+
+@keyframes loadingDot {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+/* Content fade animations */
+.content-fade-in {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.content-fade-out {
+  animation: fadeOutDown 0.6s ease-in;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+
+/* Sidebar slide animations */
+.sidebar {
+  animation: slideInLeft 0.8s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Card animations */
+.metrics-card, .chart-card {
+  animation: fadeInScale 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.metrics-card:nth-child(1) { animation-delay: 0.1s; }
+.metrics-card:nth-child(2) { animation-delay: 0.2s; }
+.metrics-card:nth-child(3) { animation-delay: 0.3s; }
+.metrics-card:nth-child(4) { animation-delay: 0.4s; }
+
+.chart-card:nth-child(1) { animation-delay: 0.5s; }
+.chart-card:nth-child(2) { animation-delay: 0.6s; }
+.chart-card:nth-child(3) { animation-delay: 0.7s; }
+.chart-card:nth-child(4) { animation-delay: 0.8s; }
+.chart-card:nth-child(5) { animation-delay: 0.9s; }
+.chart-card:nth-child(6) { animation-delay: 1.0s; }
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Navigation button hover effects */
+.nav-btn {
+  position: relative;
+  overflow: hidden;
+  transform: translateX(0);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05), transparent);
+  transition: left 0.5s;
+}
+
+.nav-btn:hover::before {
+  left: 100%;
+}
+
+.nav-btn:hover {
+  transform: translateX(5px);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.nav-btn.active {
+  background-color: hsl(var(--primary));
+  color: #ffffff;
+  transform: translateX(5px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+/* Loading animation for charts */
+.chart-card canvas {
+  opacity: 0;
+  animation: fadeInChart 1s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeInChart {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Pulse animation for active states */
+.nav-btn.active i {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Smooth page load animation */
+body {
+  animation: pageLoad 0.8s ease-out;
+}
+
+@keyframes pageLoad {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Additional white theme enhancements */
+.border-secondary {
+  border-color: #e5e7eb !important;
+}
+
+/* Enhanced shadows for better depth */
+.sidebar {
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Subtle background pattern */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(255, 107, 53, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(247, 147, 30, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Enhanced card borders */
+.metrics-card, .chart-card {
+  border: 1px solid #f3f4f6;
+}
+
+/* Better text contrast */
+.text-muted {
+  color: #6b7280 !important;
+}
+
+/* Enhanced active state */
+.nav-btn.active {
+  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+/* Dashboard-specific animations */
+.dashboard-entrance {
+  animation: dashboardEntrance 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dashboardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-10px) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Dashboard metrics animation */
+.metrics-card h3 {
+  transition: all 0.5s ease-out;
+}
+
+.metrics-card:hover h3 {
+  transform: scale(1.05);
+  color: hsl(var(--primary));
+}
+
+/* Dashboard chart animations */
+.chart-card canvas {
+  transition: all 0.8s ease-out;
+}
+
+.chart-card:hover canvas {
+  transform: scale(1.02);
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition: all 0.2s ease;
+}
+
+body {
+  background-color: #ffffff !important;
+  color: #171717 !important;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.container-fluid {
+  padding: 0 !important;
+}
+
+.sidebar {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid hsl(var(--border));
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.search-input {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(var(--border)) !important;
+  color: #171717 !important;
+  border-radius: 0.375rem;
+}
+
+.search-input:focus {
+  border-color: hsl(var(--primary)) !important;
+  box-shadow: 0 0 0 2px hsla(var(--primary), 0.2) !important;
+  background-color: rgba(255, 255, 255, 1) !important;
+  color: #171717 !important;
+}
+
+.search-input::placeholder {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: none;
+  color: #374151;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  text-align: left;
+  transition: background-color 0.2s ease;
+}
+
+.nav-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #111827;
+}
+
+.nav-btn.active {
+  background-color: hsl(var(--primary));
+  color: #ffffff;
+}
+
+.nav-btn i {
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+}
+
+.metrics-card {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.metrics-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+.chart-card {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+}
+
+.chart-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+.time-btn {
+  background: transparent;
+  border: none;
+  color: hsl(var(--muted-foreground));
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.time-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #111827;
+}
+
+.time-btn.active {
+  background-color: hsl(var(--primary));
+  color: #ffffff;
+}
+
+.text-muted {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+.text-success {
+  color: #22c55e !important;
+}
+
+.text-danger {
+  color: #ef4444 !important;
+}
+
+.fw-bold {
+  font-weight: 700 !important;
+}
+
+.fw-semibold {
+  font-weight: 600 !important;
+}
+
+.gap-1 {
+  gap: 0.25rem !important;
+}
+
+.gap-2 {
+  gap: 0.5rem !important;
+}
+
+.gap-3 {
+  gap: 0.75rem !important;
+}
+
+/* Chart container styling */
+canvas {
+  max-height: 300px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar.show {
+    left: 0;
+  }
+}
+
+/* Remove Bootstrap default margins and paddings that interfere */
+.row {
+  margin: 0 !important;
+}
+
+.col,
+.col-lg-auto {
+  padding: 0 !important;
+}
+
+/* Ensure proper spacing */
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem !important;
+}
+
+.p-4 {
+  padding: 1.5rem !important;
+}
+
+.px-3 {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+.px-4 {
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
+.py-3 {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+.border-secondary {
+  border-color: hsl(var(--border)) !important;
+}
+
+.h2 {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+}
+
+.h5 {
+  font-size: 1.125rem !important;
+}
+
+small {
+  font-size: 0.875rem !important;
+}
+
+/* Company Splash Screen */
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  z-index: 10000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: min(2rem, 5vh);
+  opacity: 1;
+  transition: all 0.8s ease-in-out;
+  overflow: hidden;
+}
+
+.splash-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+  animation: splashBackground 4s ease-in-out infinite;
+}
+
+@keyframes splashBackground {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(1deg);
+  }
+}
+
+.splash-content {
+  text-align: center;
+  color: white;
+  max-width: min(280px, 80vw);
+  padding: min(1rem, 3vh);
+  transform: scale(1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: auto;
+  padding-top: 0;
+  position: relative;
+}
+
+/* Responsive logo container */
+.logo-container {
+  margin-bottom: min(2rem, 4vh);
+  margin-top: 0;
+}
+
+.logo-icon {
+  margin-bottom: min(0.75rem, 1.5vh);
+}
+
+.logo-icon i {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  color: white;
+  animation: logoPulse 3s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.95;
+  }
+}
+
+.logo-text {
+  margin-top: min(0.5rem, 1vh);
+}
+
+.company-name {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  margin-bottom: min(0.4rem, 1vh);
+  letter-spacing: clamp(0.5px, 0.2vw, 1px);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.company-name span {
+  display: inline-block;
+  transition: all 0.3s ease-out;
+}
+
+.company-tagline {
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  opacity: 0.9;
+  font-weight: 300;
+  letter-spacing: clamp(0.3px, 0.1vw, 0.5px);
+  margin-bottom: min(1rem, 2vh);
+}
+
+.loading-section {
+  margin: min(1.5rem, 3vh) 0;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.loading-bar-container {
+  margin-bottom: min(1rem, 2vh);
+}
+
+.loading-bar {
+  width: 100%;
+  height: clamp(6px, 1.5vh, 8px);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: clamp(3px, 0.8vh, 4px);
+  overflow: hidden;
+  margin-bottom: min(0.5rem, 1vh);
+}
+
+.loading-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #ffffff, #f0f0f0);
+  border-radius: clamp(3px, 0.8vh, 4px);
+  width: 0%;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.loading-text {
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  margin-bottom: min(1rem, 2vh);
+}
+
+.loading-stats {
+  display: flex;
+  justify-content: space-between;
+  gap: min(0.75rem, 2vw);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: min(0.3rem, 0.8vh);
+}
+
+.stat-label {
+  font-size: clamp(0.65rem, 2vw, 0.75rem);
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: clamp(0.2px, 0.1vw, 0.5px);
+}
+
+.stat-value {
+  font-size: clamp(0.7rem, 2.2vw, 0.8rem);
+  font-weight: 600;
+  min-height: 1.2em;
+  transition: all 0.3s ease;
+}
+
+.stat-value:contains('✓') {
+  color: #4ade80;
+  animation: successPulse 0.5s ease-in-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+
+.version-info {
+  position: absolute;
+  bottom: min(1rem, 2vh);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(0.7rem, 2vw, 0.75rem);
+  opacity: 0.7;
+  font-weight: 300;
+}
+
+/* Floating particles */
+.floating-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: clamp(2px, 0.5vw, 3px);
+  height: clamp(2px, 0.5vw, 3px);
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.particle:nth-child(1) {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+  top: 60%;
+  left: 80%;
+  animation-delay: 1s;
+}
+
+.particle:nth-child(3) {
+  top: 80%;
+  left: 20%;
+  animation-delay: 2s;
+}
+
+.particle:nth-child(4) {
+  top: 30%;
+  left: 70%;
+  animation-delay: 3s;
+}
+
+.particle:nth-child(5) {
+  top: 70%;
+  left: 30%;
+  animation-delay: 4s;
+}
+
+.particle:nth-child(6) {
+  top: 40%;
+  left: 90%;
+  animation-delay: 5s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.5;
+  }
+  25% {
+    transform: translateY(-15px) translateX(8px);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-8px) translateX(-8px);
+    opacity: 0.6;
+  }
+  75% {
+    transform: translateY(-20px) translateX(4px);
+    opacity: 0.3;
+  }
+}
+
+/* Responsive adjustments for very small screens */
+@media (max-height: 400px) {
+  .splash-content {
+    transform: scale(0.8);
+    padding-top: min(1rem, 3vh);
+  }
+  
+  .logo-container {
+    margin-bottom: 1rem;
+  }
+  
+  .loading-section {
+    margin: 0.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .splash-content {
+    max-width: 90vw;
+    padding: 0.5rem;
+  }
+  
+  .company-name {
+    font-size: clamp(1.2rem, 6vw, 1.8rem);
+  }
+  
+  .company-tagline {
+    font-size: clamp(0.7rem, 3.5vw, 0.85rem);
+  }
+}
+
+/* Splash screen fade out animation */
+.splash-screen.fade-out {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* Ensure main content is hidden during splash */
+.container-fluid.splash-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
