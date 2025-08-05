@@ -1,0 +1,13 @@
+August 04
+10:25 START
+10:37 Using Cursor Ai assist creating database
+10:44 Setting up the database
+10:56 Integrating database to the system
+--> Error on connecting database to system
+--> Error displaying datas in chart
+--> Error on retrieving data on database
+--> functions on receivable and payable not working
+22:35 Fix the error in connecting the database
+22:36 Fix the error in retrieving data
+22:37 Fix the error in chart in receivable and payable module
+

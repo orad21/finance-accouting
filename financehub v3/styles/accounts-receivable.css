@@ -1,0 +1,141 @@
+/* Accounts Receivable specific styles */
+
+.customer-table {
+  margin-top: 1rem;
+}
+
+.customer-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid hsl(var(--border));
+  margin-bottom: 1rem;
+}
+
+.customer-col {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+}
+
+.customer-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.customer-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.customer-row.top-customer {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.customer-name {
+  font-weight: 500;
+}
+
+.top-customer-indicator {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.top-customer-text {
+  color: #ef4444;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.collections-content {
+  padding: 0;
+}
+
+.collection-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.collection-label {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  margin: 0;
+}
+
+.collection-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.add-payment-form {
+  display: flex;
+  align-items: center;
+}
+
+.add-payment-form.d-none {
+  display: none !important;
+}
+
+.add-payment-form.d-flex {
+  display: flex !important;
+}
+
+.progress-section {
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.text-success {
+  color: #22c55e !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .customer-header,
+  .customer-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .customer-col {
+    display: none;
+  }
+
+  .customer-row > div::before {
+    content: attr(data-label) ": ";
+    font-weight: 500;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .add-payment-form {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+
+  .add-payment-form input {
+    width: 100% !important;
+  }
+}
