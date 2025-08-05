@@ -182,6 +182,7 @@ function setupEventListeners() {
     const paymentInput = document.getElementById("paymentInput");
     const confirmPayment = document.getElementById("confirmPayment");
     const cancelPayment = document.getElementById("cancelPayment");
+    const topCustomerBtn = document.getElementById("topCustomerBtn");
 
     if (addPaymentBtn) {
         addPaymentBtn.addEventListener("click", () => {
@@ -192,19 +193,40 @@ function setupEventListeners() {
         });
     }
 
+    if (topCustomerBtn) {
+        topCustomerBtn.addEventListener("click", showTopCustomerDetails);
+    }
+
     if (confirmPayment) {
         confirmPayment.addEventListener("click", async () => {
             const amount = Number.parseFloat(paymentInput.value.replace(/[^0-9.-]+/g, ""));
             if (!isNaN(amount) && amount > 0) {
                 try {
-                    // Here you would typically call an API to add a payment
-                    // For now, we'll just show a success message
-                    showNotification(`Payment of $${amount.toLocaleString()} added successfully`, 'success');
-                    resetPaymentForm();
-                    loadARData(); // Reload data
+                    const response = await fetch('api/ar-customers.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            amount: amount
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showNotification(`Payment of $${amount.toLocaleString()} added successfully`, 'success');
+                        resetPaymentForm();
+                        loadARData(); // Reload data to reflect changes
+                    } else {
+                        showNotification(result.error || 'Failed to add payment', 'error');
+                    }
                 } catch (error) {
+                    console.error('Payment error:', error);
                     showNotification('Failed to add payment', 'error');
                 }
+            } else {
+                showNotification('Please enter a valid payment amount', 'error');
             }
         });
     }
@@ -236,6 +258,145 @@ function resetPaymentForm() {
         addPaymentForm.classList.remove("d-flex");
     }
     if (paymentInput) paymentInput.value = "";
+}
+
+// Show top customer details
+async function showTopCustomerDetails() {
+    try {
+        const response = await fetch('api/top-customer.php');
+        const result = await response.json();
+        
+        if (result.success) {
+            const customer = result.customer_details;
+            const invoices = result.outstanding_invoices;
+            const paymentHistory = result.payment_history;
+            
+            // Create modal content
+            const modalContent = `
+                <div class="modal fade" id="topCustomerModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="bi bi-star-fill text-warning me-2"></i>
+                                    Top At-Risk Customer Details
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <h6 class="fw-bold">Customer Information</h6>
+                                        <p><strong>Name:</strong> ${customer.customer_name}</p>
+                                        <p><strong>Contact:</strong> ${customer.contact_person || 'N/A'}</p>
+                                        <p><strong>Email:</strong> ${customer.email || 'N/A'}</p>
+                                        <p><strong>Phone:</strong> ${customer.phone || 'N/A'}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 class="fw-bold">Account Summary</h6>
+                                        <p><strong>Total Outstanding:</strong> <span class="text-danger">$${parseFloat(customer.total_outstanding).toLocaleString()}</span></p>
+                                        <p><strong>Days Overdue:</strong> <span class="text-warning">${customer.days_overdue} days</span></p>
+                                        <p><strong>Total Invoices:</strong> ${customer.total_invoices}</p>
+                                        <p><strong>Credit Limit:</strong> $${parseFloat(customer.credit_limit).toLocaleString()}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h6 class="fw-bold">Outstanding Invoices</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Invoice #</th>
+                                                    <th>Due Date</th>
+                                                    <th>Amount</th>
+                                                    <th>Balance</th>
+                                                    <th>Days Overdue</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                ${invoices.map(inv => `
+                                                    <tr>
+                                                        <td>${inv.invoice_number}</td>
+                                                        <td>${new Date(inv.due_date).toLocaleDateString()}</td>
+                                                        <td>$${parseFloat(inv.total_amount).toLocaleString()}</td>
+                                                        <td class="text-danger">$${parseFloat(inv.balance_amount).toLocaleString()}</td>
+                                                        <td class="text-warning">${inv.days_overdue} days</td>
+                                                    </tr>
+                                                `).join('')}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <h6 class="fw-bold">Recent Payment History</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Invoice #</th>
+                                                    <th>Amount</th>
+                                                    <th>Method</th>
+                                                    <th>Reference</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                ${paymentHistory.length > 0 ? paymentHistory.map(payment => `
+                                                    <tr>
+                                                        <td>${new Date(payment.payment_date).toLocaleDateString()}</td>
+                                                        <td>${payment.invoice_number}</td>
+                                                        <td class="text-success">$${parseFloat(payment.payment_amount).toLocaleString()}</td>
+                                                        <td>${payment.payment_method}</td>
+                                                        <td>${payment.reference_number || 'N/A'}</td>
+                                                    </tr>
+                                                `).join('') : '<tr><td colspan="5" class="text-center text-muted">No recent payments found</td></tr>'}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="contactCustomer('${customer.email}', '${customer.phone}')">Contact Customer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing modal if present
+            const existingModal = document.getElementById('topCustomerModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            // Add modal to page
+            document.body.insertAdjacentHTML('beforeend', modalContent);
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('topCustomerModal'));
+            modal.show();
+            
+        } else {
+            showNotification(result.message || 'No top customer data available', 'info');
+        }
+    } catch (error) {
+        console.error('Error fetching top customer details:', error);
+        showNotification('Failed to load top customer details', 'error');
+    }
+}
+
+// Contact customer function
+function contactCustomer(email, phone) {
+    if (email && email !== 'N/A') {
+        window.open(`mailto:${email}?subject=Outstanding Invoice Follow-up`, '_blank');
+    } else if (phone && phone !== 'N/A') {
+        showNotification(`Please call: ${phone}`, 'info');
+    } else {
+        showNotification('No contact information available', 'warning');
+    }
 }
 
 // Show notification

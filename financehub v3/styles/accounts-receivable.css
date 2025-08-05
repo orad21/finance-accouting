@@ -44,19 +44,57 @@
   font-weight: 500;
 }
 
+.top-customer-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
 .top-customer-indicator {
   background-color: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: 0.375rem;
   padding: 0.5rem;
   text-align: center;
-  margin-top: 1rem;
 }
 
 .top-customer-text {
   color: #ef4444;
   font-size: 0.875rem;
   font-weight: 500;
+}
+
+#topCustomerBtn {
+  align-self: flex-start;
+  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem;
+}
+
+#topCustomerBtn:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+/* Modal styling */
+.modal-content {
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
 }
 
 .collections-content {
